@@ -27,7 +27,6 @@ int main()
     sf::RectangleShape rectangle(sf::Vector2f(120, 50));
     POINT cursorPosition = { 0,0 }, windowPosition = { 0,0 }, newCircleCenterPosition = { 0,0 }, circleCenter = { 0,0 }, newCirclePosition = { 0, 0 };
     POINT cursorWindowPosition = { 0,0 };
-
     while (window.isOpen())
     {
         sf::Event event;
