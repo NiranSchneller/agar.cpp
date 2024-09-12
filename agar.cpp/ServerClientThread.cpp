@@ -10,5 +10,9 @@ ClientInformation ServerClientThread::getClientInformation() {
 }
 
 void ServerClientThread::handleClient() {
-	// TODO: Fill!
+	bool running = true;
+
+	while (running) {
+		// Fill!
+	}
 }
