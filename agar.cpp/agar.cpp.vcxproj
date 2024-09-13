@@ -139,11 +139,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Blob.cpp" />
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="Constants.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="OldClient.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerClient.cpp" />
+    <ClCompile Include="Point.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="ServerClientThread.cpp" />
+    <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Blob.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerClient.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="ServerClientThread.h" />
+    <ClInclude Include="Structs.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

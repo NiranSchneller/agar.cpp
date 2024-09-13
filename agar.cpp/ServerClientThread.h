@@ -1,6 +1,7 @@
 #ifndef SERVER_CLIENT_THREAD_H
 #define SERVER_CLIENT_THREAD_H
-#include <winsock.h>
+#include <SFML/Graphics.hpp>
+#include <WinSock2.h>
 #include "Structs.h"
 
 /*

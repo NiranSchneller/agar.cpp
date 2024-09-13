@@ -1,7 +1,7 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 #include <string>
-#include <winsock.h>
+#include <WinSock2.h>
 // TODO: create the implementations
 class Utilities
 {

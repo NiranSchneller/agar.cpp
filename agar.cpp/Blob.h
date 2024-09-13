@@ -1,10 +1,9 @@
 #ifndef BLOB_H
 #define BLOB_H
-#include <string>
 #include <SFML/Graphics.hpp>
+#include <string>
 #include "Point.h"
 class Blob {
-
 protected:
 	std::string name;
 	double radius;
