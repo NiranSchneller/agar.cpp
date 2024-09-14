@@ -5,16 +5,33 @@ PlayerClient::PlayerClient(addrinfo* connectionInformation) {
 }
 
 int PlayerClient::connectToServer() {
+	int iResult;
 	this->playerSocket = socket(this->connectionInformation->ai_family,
 								this->connectionInformation->ai_socktype,
 								this->connectionInformation->ai_protocol);
 	if (this->playerSocket == INVALID_SOCKET) { // Connection failed (Big L)
-		printf("Error trying to connect to server using socket(), %ld \n", WSAGetLastError());
+		printf("Error at socket(), %ld \n", WSAGetLastError());
 		freeaddrinfo(this->connectionInformation);
-		WSACleanup();
 		return 1;
 	}
-	return 0;
+	
+	addrinfo* info = this->connectionInformation;
+	// Loop through all possible addresses until we find one that is good
+	while (info != NULL) {
+		iResult = connect(this->playerSocket, info->ai_addr, (int)info->ai_addrlen);
+		if (iResult != SOCKET_ERROR) {
+			break;
+		}
+		info = info->ai_next;
+	}
+
+	if (info != NULL) {
+		printf("Connection to server established! \n");
+		return handleConnection();
+	}
+
+	printf("All possible addresses have been exhausted, no viable connection found!, Exiting.... \n");
+	return 1;
 }
 
 int PlayerClient::handleConnection() {

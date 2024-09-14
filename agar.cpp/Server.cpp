@@ -83,4 +83,7 @@ void Server::dispatchToServerThread(SOCKET clientSocket) {
 
 void Server::handleClient(SOCKET clientSocket) {
 	printf("Connection established with client! \n");
+	while (true) {
+
+	}
 }
