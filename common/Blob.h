@@ -23,6 +23,7 @@ public:
 	void setRadius(double radius);
 	void setPosition(Point position);
 	void setColor(sf::Color blobColor);
+	sf::CircleShape& blobToCircle();
 };
 
 #endif // !BLOB_H

@@ -13,8 +13,8 @@ POINT getCircleCenter(sf::CircleShape* circle);
 POINT getCircleTopLeft(POINT* center, sf::CircleShape* circle);
 
 /*
-    Returns the new position of the center of the circle using circle velocity
-POINT calculateNewCirclePosition(POINT* currentCenterPosition, POINT* mousePosition, long double velocity);
+*     Returns the new position of the center of the circle using circle velocity
+    POINT calculateNewCirclePosition(POINT* currentCenterPosition, POINT* mousePosition, long double velocity);
 
 
 int main()
@@ -39,7 +39,7 @@ int main()
         cursorWindowPosition = screenToWindow(&cursorPosition, &windowPosition);
         circleCenter = getCircleCenter(&circle);
         
-        newCircleCenterPosition = calculateNewCirclePosition(&circleCenter, &cursorWindowPosition, 20);
+        //newCircleCenterPosition = calculateNewCirclePosition(&circleCenter, &cursorWindowPosition, 20);
 
         newCirclePosition = getCircleTopLeft(&newCircleCenterPosition, &circle);
         std::cout << "new CirclePosition X" << newCirclePosition.x << std::endl;
@@ -74,6 +74,7 @@ POINT getCircleTopLeft(POINT* center, sf::CircleShape* circle) {
     POINT topLeft = { topLeftPosition.x, topLeftPosition.y };
     return topLeft;
 }
+*/
 
 /*
     Calculates new position by adding cartesian factors of velocity using the angle between mouse and circle

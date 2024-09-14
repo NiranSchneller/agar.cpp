@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include <Windows.h>
 #include "Constants.h"
 

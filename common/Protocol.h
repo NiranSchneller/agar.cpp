@@ -1,5 +1,7 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
+#include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <string>
 #include "Blob.h"
@@ -30,7 +32,7 @@ public:
 	// A list of blobs that the client will draw on screen.
 	static std::string sendBlobToDrawToClient(std::vector<Blob>& blobsToDraw);
 	// Reverse of sendBlobToDrawToClient, will convert from string back to list.
-	static std::vector<Blob>& getBlobsToDrawFromServer(std::string message);
+	static std::vector<Blob*> getBlobsToDrawFromServer(std::string message);
 
 };
 

@@ -1,5 +1,6 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
+#include <SFML/Graphics.hpp>
 #include <string>
 #include <vector>
 #include <WinSock2.h>

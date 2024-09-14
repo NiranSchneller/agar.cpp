@@ -1,13 +1,16 @@
 #include "PlayerClient.h"
-#include <WinSock2.h>
-#include <ws2tcpip.h>
-#include "PlayerClient.h"
 #include "Utilities.h"
 #include "Constants.h"
+#include "Graphics.h"
+#include <thread>
+#include <functional> // For std::bind
 
+#include <WinSock2.h>
+#include <ws2tcpip.h>
 #pragma comment(lib,"WS2_32")
 
-
+int screenWidth = 1280;
+int screenHeight = 720;
 int main(int argc, char* argv[]) {
 	if (argc != 3) {
 		printf("You have to specify which ip and port you want to connect to! Exiting program...");
@@ -34,12 +37,25 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	PlayerClient client(result, 1280, 720, TITLE_BAR_SIZE);
-	int connectionResult = client.connectToServer();
-	if (connectionResult != 0) {
-		return 1;
+	PlayerClient client(result, screenWidth, screenHeight, TITLE_BAR_SIZE);
+	int* connectionResult;
+	std::thread clientThread(std::bind(&PlayerClient::connectToServer, std::ref(client), connectionResult));
+	Graphics graphics(screenWidth, screenHeight);
+	
+	AgarServerInformation serverInfo;
+	while (!client.isFinished()) {
+		serverInfo = client.getUpdatedInformation();
+		graphics.drawAllBlobs(serverInfo.blobsToDraw);
+		
+		
+		if (*connectionResult != 0) {
+			return 1;
+		}
 	}
+	
+	
 
 	WSACleanup();
 	return 0;
 }
+

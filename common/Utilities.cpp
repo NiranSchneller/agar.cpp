@@ -1,3 +1,5 @@
+#include <SFML/Graphics.hpp>
+
 #include "Utilities.h"
 #include <string>
 #include "Constants.h"

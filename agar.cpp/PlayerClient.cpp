@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include "PlayerClient.h"
 #include "Utilities.h"
 #include "Protocol.h"
@@ -6,12 +7,13 @@ PlayerClient::PlayerClient(addrinfo* connectionInformation, int screenWidth, int
 	this->screenWidth = screenWidth;
 	this->screenHeight = screenHeight;
 	this->titleBarSize = titleBarSize;
+	this->finished = false;
 
 	this->connectionInformation = connectionInformation;
 	this->playerSocket = INVALID_SOCKET;
 }
 
-int PlayerClient::connectToServer() {
+void PlayerClient::connectToServer(int *connectionResult) {
 	int iResult;
 	this->playerSocket = socket(this->connectionInformation->ai_family,
 								this->connectionInformation->ai_socktype,
@@ -19,7 +21,7 @@ int PlayerClient::connectToServer() {
 	if (this->playerSocket == INVALID_SOCKET) { // Connection failed (Big L)
 		printf("Error at socket(), %ld \n", WSAGetLastError());
 		freeaddrinfo(this->connectionInformation);
-		return 1;
+		*connectionResult = 1;
 	}
 	
 	addrinfo* info = this->connectionInformation;
@@ -34,11 +36,13 @@ int PlayerClient::connectToServer() {
 
 	if (info != NULL) {
 		printf("Connection to server established! \n");
-		return handleConnection();
+		*connectionResult = handleConnection();
 	}
-
-	printf("All possible addresses have been exhausted, no viable connection found!, Exiting.... \n");
-	return 1;
+	else {
+		printf("All possible addresses have been exhausted, no viable connection found!, Exiting.... \n");
+		*connectionResult = 1;
+	}
+	this->finished = true;
 }
 
 int PlayerClient::handleConnection() {
@@ -54,16 +58,58 @@ int PlayerClient::handleConnection() {
 		return 1;
 	}
 
+	POINT cursorPosition = { 0,0 };
+	Point mousePosition;
+	std::vector<Blob*> blobsToDraw;
+	std::string recievedMessage;
 	while (running) {
-		// Send server mouse position relative to window
-		// Recieve information (all blobs to draw on screen)
+		GetCursorPos(&cursorPosition);
+
+		mousePosition.SetX(cursorPosition.x);
+		mousePosition.SetY(cursorPosition.y);
+
+		returnCode = Utilities::sendSocketMessage(this->playerSocket, Protocol::sendClientInformationToServer(mousePosition));
+
+		if (returnCode != 0) {
+			return 1;
+		}
+
+		recievedMessage = Utilities::recieveSocketMessage(this->playerSocket);
+
+		if (recievedMessage.find("SOCKET ERROR") != std::string::npos) {
+			return 1;
+		}
+
+		// Should be abstracted in protocol class but that would be hard
+		if (recievedMessage.find("KILLED") != std::string::npos) {
+			this->finished = true;
+			return 0;
+		}
 		
-		// If killed message then exit and womp womp (exit code 0)
-		// If socket error then exit with exit code 1 
-		
-		// Store in information variable
+		blobsToDraw = Protocol::getBlobsToDrawFromServer(recievedMessage);
+
+		this->updateInformationMutex.lock();
+		updatedInformation.blobsToDraw = blobsToDraw;
+		this->updateInformationMutex.unlock();
 	}
+	this->finished = true;
 	return exitCode;
 
 	// Check out
+}
+
+
+bool PlayerClient::isFinished() {
+	return this->finished;
+}
+
+AgarServerInformation PlayerClient::getUpdatedInformation() {
+	AgarServerInformation serverInformation;
+	
+	this->updateInformationMutex.lock();
+	serverInformation = updatedInformation;
+	this->updateInformationMutex.unlock();
+
+	return serverInformation;
+
 }

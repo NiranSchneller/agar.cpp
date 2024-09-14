@@ -1,5 +1,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
+#include <SFML/Graphics.hpp>
+
 #include <string>
 int calculateTitleBarSize();
 extern const int TITLE_BAR_SIZE; // The size of the title bar at the top of the window

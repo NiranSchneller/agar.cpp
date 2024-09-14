@@ -1,5 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
+#include <SFML/Graphics.hpp>
+
 #include "Point.h"
 #include <vector>
 #include "Blob.h"

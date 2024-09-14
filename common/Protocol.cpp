@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include "Protocol.h"
 #include "Constants.h"
 #include "Utilities.h"
@@ -16,4 +17,14 @@ std::vector<int> Protocol::getInitialInformationFromClient(std::string message) 
 	return out;
 }
 
+std::string Protocol::sendClientInformationToServer(Point mousePosition) { return ""; }
+Point Protocol::getClientInformationFromClient(std::string message) { return NULL; }
+
+/*
+	From server to client.
+*/
+// A list of blobs that the client will draw on screen.
+std::string Protocol::sendBlobToDrawToClient(std::vector<Blob>& blobsToDraw) { return NULL; }
+// Reverse of sendBlobToDrawToClient, will convert from string back to list.
+std::vector<Blob*> Protocol::getBlobsToDrawFromServer(std::string message) { std::vector<Blob*> blob; return blob; }
 

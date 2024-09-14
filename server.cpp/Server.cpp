@@ -82,12 +82,18 @@ void Server::dispatchToServerThread(SOCKET clientSocket) {
 
 }
 
+
 void Server::handleClient(SOCKET clientSocket) {
 	// recieve first message from client
 	std::string messageFromClient = Utilities::recieveSocketMessage(clientSocket);
 	std::vector<int> initialInformation = Protocol::getInitialInformationFromClient(messageFromClient);
 	printf("Recieved Initial information: W:%d, H:%d, TBP:%d", initialInformation.at(0),
 		initialInformation.at(1), initialInformation.at(2));
+
+	/*
+		Implement server side logic.
+		Implement protocol.h
+	*/
 	while (true) {
 
 	}
