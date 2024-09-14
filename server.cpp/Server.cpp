@@ -59,12 +59,12 @@ int Server::startServer(int port) {
 	SOCKET clientSocket = INVALID_SOCKET;
 	
 	while (true) {
-		printf("Accepting Connections!!!! \n");
 		clientSocket = accept(listeningSocket, NULL, NULL);
 		if (clientSocket == INVALID_SOCKET) {
 			printf("accept failed: %d\n", WSAGetLastError());
 			continue;
 		}
+		printf("Connection accepted, dispatching to thread \n");
 		dispatchToServerThread(clientSocket);
 	}
 
@@ -82,7 +82,8 @@ void Server::dispatchToServerThread(SOCKET clientSocket) {
 }
 
 void Server::handleClient(SOCKET clientSocket) {
-	printf("Connection established with client! \n");
+	
+
 	while (true) {
 
 	}

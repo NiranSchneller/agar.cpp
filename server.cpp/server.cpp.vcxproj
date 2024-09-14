@@ -133,13 +133,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\agar.cpp\Server.h" />
+    <ClInclude Include="..\agar.cpp\Blob.h" />
+    <ClInclude Include="..\agar.cpp\Point.h" />
     <ClInclude Include="..\agar.cpp\Utilities.h" />
+    <ClInclude Include="Protocol.h" />
+    <ClInclude Include="Server.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\agar.cpp\AgarServer.cpp" />
-    <ClCompile Include="..\agar.cpp\Server.cpp" />
+    <ClCompile Include="..\agar.cpp\Blob.cpp" />
+    <ClCompile Include="..\agar.cpp\Point.cpp" />
     <ClCompile Include="..\agar.cpp\Utilities.cpp" />
+    <ClCompile Include="AgarServer.cpp" />
+    <ClCompile Include="Protocol.cpp" />
+    <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
