@@ -2,14 +2,28 @@
 #define SERVER_H
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "ServerClientThread.h"
+#include <WinSock2.h>
+#include <thread>
 class Server
 {
 private:
-	std::vector<ServerClientThread> threads;
+	/*
+		Unique pointers we want automatic memory management,
+		and if we just made it of type std::thread everytime we pushed back
+		a thread it would try to copy it. Using only vector of *thread would 
+		result in us having to manually delete the threads.
+	*/
+	std::vector<std::unique_ptr<std::thread>> threads;
+	void dispatchToServerThread(SOCKET clientSocket);
+	void handleClient(SOCKET clientSocket);
+
 public:
-	Server();
-	void startServer(); // This will be an infinite loop which accepts clients
+	Server(int i);
+	/*
+	 This will be an infinite loop which accepts clients.
+	 This also starts up WinSock API.
+	*/
+	int startServer(int port); 
 
 };
 

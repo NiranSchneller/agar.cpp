@@ -2,7 +2,6 @@
 #define SERVER_CLIENT_THREAD_H
 #include <SFML/Graphics.hpp>
 #include <WinSock2.h>
-#include "Structs.h"
 
 /*
 	Each instance of this class is supposed to be in a thread of it's own. Will be dispatched by owner.

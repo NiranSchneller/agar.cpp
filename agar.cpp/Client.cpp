@@ -2,24 +2,16 @@
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #include "PlayerClient.h"
-
+#include "Utilities.h"
 #pragma comment(lib,"WS2_32")
-/*
-	Initializes windows socket API.
-	Include in main function before using WinSock:
-	
-	if (initializeWinSock() != 0) {
-		return 1;
-	}
-*/
-int initializeWinSock();
+
 
 int main(int argc, char* argv[]) {
 	if (argc != 3) {
 		printf("You have to specify which ip and port you want to connect to! Exiting program...");
 		return 1;
 	}
-	if (initializeWinSock() != 0) {
+	if (Utilities::initializeWinSock() != 0) {
 		return 1;
 	}
 	
@@ -46,16 +38,6 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
+	WSACleanup();
 	return 0;
-}
-
-int initializeWinSock() {
-	WSADATA wsaData;
-	int iResult;
-	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (iResult != 0) {
-		printf("WSAStartup failed: %d \n", iResult);
-	}
-	return iResult;
-
 }
