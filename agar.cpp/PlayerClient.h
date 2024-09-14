@@ -11,12 +11,16 @@ private:
 	SOCKET playerSocket;
 	AgarServerInformation updatedInformation;
 	addrinfo* connectionInformation;
+	int screenWidth;
+	int screenHeight;
+	int titleBarSize;
+
 	/*
 		While we update new information from server we can't have the owner trying to use getUpdatedInformation()
 	*/
 	std::mutex updateInformationMutex; 
 public:
-	PlayerClient(addrinfo* connectionInformation); // Assumes WinSock has already gone through startup
+	PlayerClient(addrinfo* connectionInformation, int screenWidth, int screenHeight, int titleBarSize); // Assumes WinSock has already gone through startup
 	AgarServerInformation getUpdatedInformation();
 
 	/*

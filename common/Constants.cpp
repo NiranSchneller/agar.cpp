@@ -10,3 +10,6 @@ int calculateTitleBarSize() {
     return titleBarHeight;
 }
 const int TITLE_BAR_SIZE = calculateTitleBarSize();
+const std::string DELIMETER = "~";
+const std::string SIZE_HEADER = "00000000" + DELIMETER; // 8 characters for length and one delimeter
+const int SIZE_HEADER_SIZE = SIZE_HEADER.length();

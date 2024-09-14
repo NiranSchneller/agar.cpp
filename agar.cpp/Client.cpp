@@ -3,6 +3,8 @@
 #include <ws2tcpip.h>
 #include "PlayerClient.h"
 #include "Utilities.h"
+#include "Constants.h"
+
 #pragma comment(lib,"WS2_32")
 
 
@@ -32,7 +34,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	PlayerClient client(result);
+	PlayerClient client(result, 1280, 720, TITLE_BAR_SIZE);
 	int connectionResult = client.connectToServer();
 	if (connectionResult != 0) {
 		return 1;

@@ -1,5 +1,12 @@
 #include "PlayerClient.h"
-PlayerClient::PlayerClient(addrinfo* connectionInformation) {
+#include "Utilities.h"
+#include "Protocol.h"
+
+PlayerClient::PlayerClient(addrinfo* connectionInformation, int screenWidth, int screenHeight, int titleBarSize) {
+	this->screenWidth = screenWidth;
+	this->screenHeight = screenHeight;
+	this->titleBarSize = titleBarSize;
+
 	this->connectionInformation = connectionInformation;
 	this->playerSocket = INVALID_SOCKET;
 }
@@ -39,6 +46,13 @@ int PlayerClient::handleConnection() {
 	int exitCode = 0;
 	// Send server first message With information (screen resolution, title bar pixels)
 	// Recieve confirmation message from server
+	int returnCode = Utilities::sendSocketMessage(this->playerSocket,
+				Protocol::sendInitialInformationToServer(this->screenWidth, this->screenHeight, this->titleBarSize));
+
+	if (returnCode != 0) {
+		printf("Error sending initial message!");
+		return 1;
+	}
 
 	while (running) {
 		// Send server mouse position relative to window
