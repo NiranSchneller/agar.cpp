@@ -5,12 +5,9 @@ PlayerClient::PlayerClient(addrinfo* connectionInformation) {
 }
 
 int PlayerClient::connectToServer() {
-	printf("Nice2");
-
 	this->playerSocket = socket(this->connectionInformation->ai_family,
 								this->connectionInformation->ai_socktype,
 								this->connectionInformation->ai_protocol);
-	printf("Nice2");
 	if (this->playerSocket == INVALID_SOCKET) { // Connection failed (Big L)
 		printf("Error trying to connect to server using socket(), %ld \n", WSAGetLastError());
 		freeaddrinfo(this->connectionInformation);

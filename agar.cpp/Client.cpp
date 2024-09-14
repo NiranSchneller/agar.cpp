@@ -32,8 +32,14 @@ int main(int argc, char* argv[]) {
 	hints.ai_protocol = IPPROTO_TCP;
 	
 	// Get address information from API
+	printf("IP: %s, port: %s \n", argv[1], argv[2]);
 	int iResult = getaddrinfo(argv[1], argv[2], &hints, &result);
-	printf("Nice");
+	if (iResult != 0) {
+		printf("getaddrinfo failed: %d\n", iResult);
+		WSACleanup();
+		return 1;
+	}
+
 	PlayerClient client(result);
 	int connectionResult = client.connectToServer();
 	if (connectionResult != 0) {
