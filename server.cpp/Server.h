@@ -30,7 +30,7 @@ public:
 	int startServer(int port); 
 	Player spawnPlayer();
 
-	static std::vector<std::unique_ptr<Blob>> findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>> blobsInGame,
+	static std::vector<std::unique_ptr<Blob>> findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>>& blobsInGame,
 		Point playerPosition,
 		PlayerCamera camera);
 

@@ -153,7 +153,7 @@ void Server::handleClient(SOCKET clientSocket) {
 /*
 	Player position is in world coordinates
 */
-std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>> blobsInGame,
+std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>>& blobsInGame,
 																Point playerPosition,
 																PlayerCamera camera) {
 	std::vector<std::unique_ptr<Blob>> blobsToDraw;
