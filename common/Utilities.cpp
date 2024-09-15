@@ -6,7 +6,7 @@
 #include "Point.h"
 #include <memory>
 #include <cstdlib>  
-const bool LOG_TCP = true;
+const bool LOG_TCP = false;
 
 
 int Utilities::sendSocketMessage(SOCKET socket, std::string message) {
@@ -36,7 +36,9 @@ int Utilities::sendSocketMessage(SOCKET socket, std::string message) {
 	/*
 		Send actual message
 	*/
-	printf("Message length: %d \n", message.length());
+	if (LOG_TCP) {
+		printf("Message length: %d \n", message.length());
+	}
 
 	bytesSent = 0; // Shock!
 	while (bytesSent < message.length()) {

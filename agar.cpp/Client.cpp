@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 	AgarServerInformation serverInfo;
 	while (!client.isFinished()) {
 		serverInfo = client.getUpdatedInformation();
-		graphics.getGameWindow().clear(sf::Color(0, 0, 255)); // White lol!
+		graphics.getGameWindow().clear(sf::Color(255, 255, 255)); // White lol!
 		graphics.drawAllBlobs(std::move(serverInfo.blobsToDraw));
 		graphics.getGameWindow().display();
 		
