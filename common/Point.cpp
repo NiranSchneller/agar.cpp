@@ -22,3 +22,18 @@ void Point::SetY(double y) {
 	this->y = y;
 }
 
+Point Point::minus(Point other) {
+	return Point::Point(this->x - other.x, this->y - other.y);
+}
+
+Point Point::plus(Point other) {
+	return Point::Point(this->x + other.x, this->y + other.y);
+}
+
+Point Point::mul(Point other) {
+	return Point::Point(this->x * other.x, this->y * other.y);
+}
+
+Point Point::div(Point other) {
+	return Point::Point(this->x / other.x, this->y / other.y);
+}

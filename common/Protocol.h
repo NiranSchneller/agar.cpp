@@ -30,9 +30,9 @@ public:
 		From server to client.
 	*/
 	// A list of blobs that the client will draw on screen.
-	static std::string sendBlobToDrawToClient(std::vector<Blob>& blobsToDraw);
+	static std::string sendBlobToDrawToClient(std::vector<std::unique_ptr<Blob>> blobsToDraw);
 	// Reverse of sendBlobToDrawToClient, will convert from string back to list.
-	static std::vector<Blob*> getBlobsToDrawFromServer(std::string message);
+	static std::vector<std::unique_ptr<Blob>> getBlobsToDrawFromServer(std::string message);
 
 };
 

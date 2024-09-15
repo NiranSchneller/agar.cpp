@@ -4,6 +4,7 @@
 #include <vector>
 #include <WinSock2.h>
 #include <thread>
+#include "Player.h"
 class Server
 {
 private:
@@ -14,17 +15,18 @@ private:
 		result in us having to manually delete the threads.
 	*/
 	std::vector<std::unique_ptr<std::thread>> threads;
+	std::vector<Blob*> blobsInGame;
 	void dispatchToServerThread(SOCKET clientSocket);
 	void handleClient(SOCKET clientSocket);
 
 public:
-	Server(int i);
+	Server(int amountOfBlobs);
 	/*
 	 This will be an infinite loop which accepts clients.
 	 This also starts up WinSock API.
 	*/
 	int startServer(int port); 
-
+	Player spawnPlayer();
 };
 
 

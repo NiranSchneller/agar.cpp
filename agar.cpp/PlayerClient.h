@@ -10,6 +10,7 @@ private:
 	SOCKET playerSocket;
 	AgarServerInformation updatedInformation;
 	addrinfo* connectionInformation;
+	sf::RenderWindow* pGameWindow;
 	int screenWidth;
 	int screenHeight;
 	int titleBarSize;
@@ -27,8 +28,10 @@ public:
 		If a nonzero value is returned, then the connection has failed.
 
 		Error code will be returned to connection result.
+
+		gameWindow is needed to send window position to server.
 	*/
-	void connectToServer(int* connectionResult);
+	void connectToServer(int* connectionResult, sf::RenderWindow* gameWindow);
 	/*
 		Should be seperated into a different thread by owner.
 		Will attempt to open a connection to said ip address and port, if successfull will start communicating.

@@ -1,11 +1,19 @@
 #include "Server.h"
 #include "Utilities.h"
 #include "Protocol.h"
+#include "Player.h"
+#include "Constants.h"
+#include "PlayerCamera.h"
 #include <ws2tcpip.h>
 #include <string.h>
 #include <thread>
-Server::Server(int i) {
-	
+#include <iostream>
+#include <rpcdce.h>  // Contains the UuidCreate function
+#include <iomanip>   // For formatting the UUID output
+#include <memory>
+
+Server::Server(int amountOfBlobs) {
+	this->blobsInGame = spawnBlobs(amountOfBlobs);
 }
 
 int Server::startServer(int port) {
@@ -82,6 +90,37 @@ void Server::dispatchToServerThread(SOCKET clientSocket) {
 
 }
 
+#pragma comment(lib, "Rpcrt4.lib")
+Player Server::spawnPlayer() {
+	Player player;
+	
+	std::string uuidName;
+
+	UUID uuid;
+	RPC_STATUS status = UuidCreate(&uuid);
+	if (status == RPC_S_OK) {
+		// Convert the UUID to a string
+		RPC_CSTR uuidString;
+		UuidToStringA(&uuid, &uuidString);
+		// Output the UUID
+		
+		uuidName = std::string(reinterpret_cast<const char*>(uuidString));
+		std::cout << "Generated UUID: " << uuidName << std::endl;
+
+		// Free the string after use
+		RpcStringFreeA(&uuidString);
+	}
+	else {
+		std::cout << "Failed to generate UUID" << std::endl;
+	}
+
+	player.setBlobName(uuidName);
+	player.setRadius(20);
+	player.setPosition(generateRandomBlobPosition(player.getRadius()));
+	player.setColor(sf::Color::Color()); // Black
+
+	return player;
+}
 
 void Server::handleClient(SOCKET clientSocket) {
 	// recieve first message from client
@@ -90,11 +129,47 @@ void Server::handleClient(SOCKET clientSocket) {
 	printf("Recieved Initial information: W:%d, H:%d, TBP:%d", initialInformation.at(0),
 		initialInformation.at(1), initialInformation.at(2));
 
+	Player player = spawnPlayer();
+	PlayerCamera camera(Point::Point(initialInformation.at(0), initialInformation.at(1)));
+
 	/*
 		Implement server side logic.
 		Implement protocol.h
 	*/
+	Point clientMousePosition(0,0);
+	
 	while (true) {
-
+		clientMousePosition = Protocol::getClientInformationFromClient(Utilities::recieveSocketMessage(clientSocket));
+		//player.calculateNewPlayerPosition();
 	}
 }
+
+static std::vector<Blob*> findWhichBlobsToDraw() {
+
+}
+
+
+static bool shouldDrawBlob(Blob& player, Blob& blob) {
+
+}
+
+static Point generateRandomBlobPosition(int blobRadius) {
+	Point lowerBounds(blobRadius, blobRadius);
+	Point upperBounds(MAP_SIZE - blobRadius, MAP_SIZE - blobRadius);
+	return Utilities::generateRandomPoint(lowerBounds, upperBounds);
+}
+
+
+static std::vector<std::unique_ptr<Blob>> spawnBlobs(int amountOfBlobs) {
+	std::vector<std::unique_ptr<Blob>> blobs;
+	for (size_t i = 0; i < amountOfBlobs; i++) {
+		blobs.push_back(spawnBlob());
+	}
+	return blobs;
+}
+
+static std::unique_ptr<Blob> spawnBlob() {
+	Blob blob("", BLOB_RADIUS, generateRandomBlobPosition(BLOB_RADIUS), sf::Color::Color());
+	return std::make_unique<Blob>(blob);
+}
+

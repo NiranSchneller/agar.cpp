@@ -11,10 +11,12 @@ PlayerClient::PlayerClient(addrinfo* connectionInformation, int screenWidth, int
 
 	this->connectionInformation = connectionInformation;
 	this->playerSocket = INVALID_SOCKET;
+	this->pGameWindow = nullptr;
 }
 
-void PlayerClient::connectToServer(int *connectionResult) {
+void PlayerClient::connectToServer(int *connectionResult, sf::RenderWindow* gameWindow) {
 	int iResult;
+	this->pGameWindow = gameWindow;
 	this->playerSocket = socket(this->connectionInformation->ai_family,
 								this->connectionInformation->ai_socktype,
 								this->connectionInformation->ai_protocol);
@@ -59,14 +61,16 @@ int PlayerClient::handleConnection() {
 	}
 
 	POINT cursorPosition = { 0,0 };
-	Point mousePosition;
+	Point mousePosition(0,0);
+	Point gameWindowPos(0,0);
 	std::vector<Blob*> blobsToDraw;
 	std::string recievedMessage;
 	while (running) {
 		GetCursorPos(&cursorPosition);
 
-		mousePosition.SetX(cursorPosition.x);
-		mousePosition.SetY(cursorPosition.y);
+		// Window relative cursor position.
+		mousePosition.SetX(cursorPosition.x - this->pGameWindow->getPosition().x);
+		mousePosition.SetY(cursorPosition.y - this->pGameWindow->getPosition().y);
 
 		returnCode = Utilities::sendSocketMessage(this->playerSocket, Protocol::sendClientInformationToServer(mousePosition));
 

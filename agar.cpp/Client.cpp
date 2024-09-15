@@ -39,8 +39,8 @@ int main(int argc, char* argv[]) {
 
 	PlayerClient client(result, screenWidth, screenHeight, TITLE_BAR_SIZE);
 	int* connectionResult;
-	std::thread clientThread(std::bind(&PlayerClient::connectToServer, std::ref(client), connectionResult));
 	Graphics graphics(screenWidth, screenHeight);
+	std::thread clientThread(std::bind(&PlayerClient::connectToServer, std::ref(client), connectionResult));
 	
 	AgarServerInformation serverInfo;
 	while (!client.isFinished()) {

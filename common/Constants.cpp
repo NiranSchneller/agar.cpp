@@ -14,3 +14,7 @@ const int TITLE_BAR_SIZE = calculateTitleBarSize();
 const std::string DELIMETER = "~";
 const std::string SIZE_HEADER = "00000000" + DELIMETER; // 8 characters for length and one delimeter
 const int SIZE_HEADER_SIZE = SIZE_HEADER.length();
+const int MAP_SIZE = 2000;
+const int BLOB_RADIUS = 5;
+const int PLAYER_VELOCITY = 20;
+

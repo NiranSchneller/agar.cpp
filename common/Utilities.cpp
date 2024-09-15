@@ -3,7 +3,9 @@
 #include "Utilities.h"
 #include <string>
 #include "Constants.h"
+#include "Point.h"
 #include <memory>
+#include <cstdlib>  
 const bool LOG_TCP = true;
 
 
@@ -138,3 +140,9 @@ int Utilities::initializeWinSock() {
 	}
 	return iResult;
 }
+Point Utilities::generateRandomPoint(Point lowerBounds, Point upperBounds) {
+	int x = (rand() % ((int)upperBounds.GetX() - (int)lowerBounds.GetX() + 1)) + (int)lowerBounds.GetX();
+	int y = (rand() % ((int)upperBounds.GetY() - (int)lowerBounds.GetY() + 1)) + (int)lowerBounds.GetY();
+	return Point::Point(x, y);
+}
+

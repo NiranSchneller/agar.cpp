@@ -33,6 +33,11 @@ public:
 		Takes a message split by a delimeter, and returns a vector of the strings without the delimeter.
 	*/
 	static std::vector<std::string> splitByDelimeter(std::string message, std::string delimeter);
+
+	/*
+		Will generate a random point within a rectangle (lowerBounds, upperBounds)
+	*/
+	static Point generateRandomPoint(Point lowerBounds, Point upperBounds);
 };
 
 #endif // !UTILITIES_H

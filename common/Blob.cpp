@@ -17,6 +17,8 @@ Blob::Blob(double radius, Point position) {
 	this->setRadius(radius);
 	this->setPosition(position);
 }
+Blob::Blob() {
+}
 
 std::string Blob::getBlobName() {
 	return this->name;

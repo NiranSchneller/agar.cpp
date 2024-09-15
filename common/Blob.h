@@ -13,6 +13,7 @@ public:
 	Blob(std::string name, double radius, Point position, sf::Color blobColor);
 	Blob(double radius, Point position, sf::Color blobColor);
 	Blob(double radius, Point position);
+	Blob();
 	~Blob() = default;
 
 	std::string getBlobName();
