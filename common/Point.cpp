@@ -40,5 +40,5 @@ Point Point::div(Point other) {
 
 bool Point::inRectangle(Point topLeft, Point bottomRight) {
 	return (this->x - topLeft.x) > 0 && (this->y - topLeft.y) > 0
-		&& (bottomRight.x - this->x) > 0 && (bottomRight.x - this->x) > 0;
+		&& (bottomRight.x - this->x) > 0 && (bottomRight.y - this->y) > 0;
 }

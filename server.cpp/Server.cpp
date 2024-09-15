@@ -157,10 +157,16 @@ std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std:
 																Point playerPosition,
 																PlayerCamera camera) {
 	std::vector<std::unique_ptr<Blob>> blobsToDraw;
-
+	Blob screenBlob;
+	Point pos;
 	for (size_t i = 0; i < blobsInGame.size(); i++) {
 		if (camera.shouldDrawBlobOnScreen(playerPosition, blobsInGame.at(i)->getPosition())) {
-			blobsToDraw.push_back(blobsInGame[i]->clone());
+			screenBlob = Blob::Blob(blobsInGame[i]->getBlobName(), blobsInGame[i]->getRadius(), blobsInGame[i]->getPosition(), blobsInGame[i]->getColor());
+
+			pos = camera.worldToScreenCoordinates(playerPosition, screenBlob.getPosition());
+			pos = Point::Point((int)pos.GetX(), (int)pos.GetY());
+			screenBlob.setPosition(pos);
+			blobsToDraw.push_back(std::make_unique<Blob>(screenBlob.getBlobName(), screenBlob.getRadius(), screenBlob.getPosition(), screenBlob.getColor()));
 		}
 	}
 
@@ -182,6 +188,7 @@ std::vector<std::unique_ptr<Blob>> Server::spawnBlobs(int amountOfBlobs) {
 	std::vector<std::unique_ptr<Blob>> blobs;
 	for (size_t i = 0; i < amountOfBlobs; i++) {
 		blobs.push_back(Server::spawnBlob());
+		std::cout << blobs[i]->getPosition().GetY() << std::endl;
 	}
 	return blobs;
 }

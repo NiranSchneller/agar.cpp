@@ -66,7 +66,6 @@ sf::CircleShape& Blob::blobToCircle() {
 
 	sf::CircleShape circle(this->radius);
 	circle.setPosition(pos.x, pos.y);
-	printf("CircleR: %f, Circlex: %f CircleY: %f", this->radius, pos.x, pos.y);
 	circle.setFillColor(this->blobColor);
 	return circle;
 }

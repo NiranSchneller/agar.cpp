@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
 		serverInfo = client.getUpdatedInformation();
 		graphics.getGameWindow().clear(sf::Color(255, 255, 255)); // White lol!
 		graphics.drawAllBlobs(std::move(serverInfo.blobsToDraw));
+		
 		graphics.getGameWindow().display();
 		
 		if (*pConnectionResult != 0) {

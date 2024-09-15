@@ -8,7 +8,7 @@ PlayerCamera::PlayerCamera(Point screenResolution) {
 
 Point PlayerCamera::worldToScreenCoordinates(Point playerPosition, Point worldPoint) {
 	// Calculate PlayerCamera position
-	Point playerCameraPosition = playerPosition.minus(this->cameraDimensions.div(2));
+	Point playerCameraPosition = playerPosition.minus(this->cameraDimensions.div(Point::Point(2,2)));
 
 	Point relativeToPlayerCamera = worldPoint.minus(playerCameraPosition);
 
@@ -16,6 +16,6 @@ Point PlayerCamera::worldToScreenCoordinates(Point playerPosition, Point worldPo
 }
 
 bool PlayerCamera::shouldDrawBlobOnScreen(Point playerPosition, Point blobPosition) {
-	return blobPosition.inRectangle(playerPosition.minus(this->cameraDimensions.div(2)),
-		playerPosition.plus(this->cameraDimensions.div(2)));
+	return blobPosition.inRectangle(playerPosition.minus(this->cameraDimensions.div(Point::Point(2, 2))),
+		playerPosition.plus(this->cameraDimensions.div(Point::Point(2, 2))));
 }

@@ -3,6 +3,7 @@
 #include "Constants.h"
 #include "Utilities.h"
 #include <memory>
+#include <iostream>
 
 std::string Protocol::sendInitialInformationToServer(int resWidth, int resHeight, int titleBarSize) {
 	return std::to_string(resWidth) + DELIMETER + std::to_string(resHeight) 
@@ -44,8 +45,18 @@ std::string Protocol::sendBlobToDrawToClient(std::vector<std::unique_ptr<Blob>> 
 	double radius;
 	std::string colorInText;
 	std::string posInText;
-	for (size_t i = 0; i < blobsToDraw.size() - 1; i++) { // We don't want to add delimeter in the last time
-		currentBlob = std::move(blobsToDraw.at(i));
+
+	if (blobsToDraw.size() == 0) {
+		return "";
+	}
+
+	for (int i = 0; i < blobsToDraw.size() - 1; i++) { // We don't want to add delimeter in the last time
+		currentBlob = std::make_unique<Blob>(
+			blobsToDraw.at(i)->getBlobName(),
+			blobsToDraw.at(i)->getRadius(),
+			blobsToDraw.at(i)->getPosition(),
+			blobsToDraw.at(i)->getColor()
+		);
 		blobName = currentBlob->getBlobName();
 		radius = currentBlob->getRadius();
 		color = currentBlob->getColor();
@@ -79,17 +90,16 @@ std::vector<std::unique_ptr<Blob>> Protocol::getBlobsToDrawFromServer(std::strin
 
 	std::vector<std::unique_ptr<Blob>> blobsToDraw;
 	std::vector<std::string> splitMessage = Utilities::splitByDelimeter(message, DELIMETER);
-
 	std::vector<std::string> splitBlob;
 	Blob blob(0, Point::Point(0,0));
 	sf::Color blobColor;
 	for (size_t i = 0; i < splitMessage.size(); i++) {
-		splitBlob = Utilities::splitByDelimeter(splitMessage.at(i), ",");
 		
+		splitBlob = Utilities::splitByDelimeter(splitMessage.at(i), ",");
 		// Reverse of sendBlobToDrawToClient (for loop section)
 		blob.setBlobName(splitBlob.at(0));
-		blob.setRadius(stoi(splitBlob.at(1)));
-		blob.setPosition(Point::Point(stoi(splitBlob.at(2)), stoi(splitBlob.at(3))));
+		blob.setRadius(stod(splitBlob.at(1)));
+		blob.setPosition(Point::Point(stod(splitBlob.at(2)), stod(splitBlob.at(3))));
 		
 		blob.setColor(sf::Color::Color(stoi(splitBlob.at(4)), stoi(splitBlob.at(5)),
 						stoi(splitBlob.at(6)), stoi(splitBlob.at(7))));

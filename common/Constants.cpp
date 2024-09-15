@@ -16,5 +16,5 @@ const std::string SIZE_HEADER = "00000000" + DELIMETER; // 8 characters for leng
 const int SIZE_HEADER_SIZE = SIZE_HEADER.length();
 const int MAP_SIZE = 20000;
 const int BLOB_RADIUS = 5;
-const int PLAYER_VELOCITY = 1;
+const double PLAYER_VELOCITY = 1;
 
