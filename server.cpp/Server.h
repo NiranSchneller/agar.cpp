@@ -5,6 +5,8 @@
 #include <WinSock2.h>
 #include <thread>
 #include "Player.h"
+#include "Point.h"
+#include "PlayerCamera.h"
 class Server
 {
 private:
@@ -15,7 +17,7 @@ private:
 		result in us having to manually delete the threads.
 	*/
 	std::vector<std::unique_ptr<std::thread>> threads;
-	std::vector<Blob*> blobsInGame;
+	std::vector<std::unique_ptr<Blob>> blobsInGame;
 	void dispatchToServerThread(SOCKET clientSocket);
 	void handleClient(SOCKET clientSocket);
 
@@ -27,6 +29,17 @@ public:
 	*/
 	int startServer(int port); 
 	Player spawnPlayer();
+
+	static std::vector<std::unique_ptr<Blob>> findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>> blobsInGame,
+		Point playerPosition,
+		PlayerCamera camera);
+
+	static Point generateRandomBlobPosition(int blobRadius);
+
+
+	static std::vector<std::unique_ptr<Blob>> spawnBlobs(int amountOfBlobs);
+
+	static std::unique_ptr<Blob> spawnBlob();
 };
 
 

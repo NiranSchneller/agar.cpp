@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <WinSock2.h>
+#include "Point.h"
 class Utilities
 {
 public:

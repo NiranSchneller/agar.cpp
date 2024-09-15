@@ -5,9 +5,8 @@
 class PlayerCamera
 {
 private:
-	double width;
-	double height;
 
+	Point cameraDimensions;
 	Point screenResolution; // x -> Width, y -> Height
 public:
 	PlayerCamera(Point screenResolution);

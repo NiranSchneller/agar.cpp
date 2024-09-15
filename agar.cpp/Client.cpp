@@ -38,21 +38,22 @@ int main(int argc, char* argv[]) {
 	}
 
 	PlayerClient client(result, screenWidth, screenHeight, TITLE_BAR_SIZE);
-	int* connectionResult;
+	int connectionResult = 0;
+	int* pConnectionResult = &connectionResult;
 	Graphics graphics(screenWidth, screenHeight);
-	std::thread clientThread(std::bind(&PlayerClient::connectToServer, std::ref(client), connectionResult));
+	std::thread clientThread(std::bind(&PlayerClient::connectToServer, std::ref(client), pConnectionResult, &graphics.getGameWindow()));
 	
 	AgarServerInformation serverInfo;
 	while (!client.isFinished()) {
 		serverInfo = client.getUpdatedInformation();
-		graphics.drawAllBlobs(serverInfo.blobsToDraw);
+		graphics.getGameWindow().clear(sf::Color(0, 0, 255)); // White lol!
+		graphics.drawAllBlobs(std::move(serverInfo.blobsToDraw));
+		graphics.getGameWindow().display();
 		
-		
-		if (*connectionResult != 0) {
+		if (*pConnectionResult != 0) {
 			return 1;
 		}
 	}
-	
 	
 
 	WSACleanup();

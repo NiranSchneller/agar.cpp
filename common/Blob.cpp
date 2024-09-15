@@ -1,11 +1,16 @@
 #include <SFML/Graphics.hpp>
 #include "Blob.h"
 #include "Constants.h"
+#include <memory>
 Blob::Blob(std::string name, double radius, Point position, sf::Color blobColor) {
 	this->setBlobName(name);
 	this->setRadius(radius);
 	this->setPosition(position);
 	this->setColor(blobColor);
+}
+
+std::unique_ptr<Blob> Blob::clone() const {
+	return std::make_unique<Blob>(*this);
 }
 
 Blob::Blob(double radius, Point position, sf::Color blobColor) {

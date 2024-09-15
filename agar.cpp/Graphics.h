@@ -8,9 +8,9 @@ private:
 	sf::RenderWindow gameWindow;
 public:
 	Graphics(int screenWidth, int screenHeight);
-	void drawAllBlobs(std::vector<Blob*> blobsToDraw);
+	void drawAllBlobs(std::vector<std::unique_ptr<Blob>> blobsToDraw);
 	sf::RenderWindow& getGameWindow();
-	void drawBlob(Blob& blob);
+	void drawBlob(std::unique_ptr<Blob> blob);
 };
 
 #endif // !GRAPHICS_H

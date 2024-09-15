@@ -13,7 +13,7 @@
 #include <memory>
 
 Server::Server(int amountOfBlobs) {
-	this->blobsInGame = spawnBlobs(amountOfBlobs);
+	this->blobsInGame = std::move(spawnBlobs(amountOfBlobs));
 }
 
 int Server::startServer(int port) {
@@ -116,7 +116,7 @@ Player Server::spawnPlayer() {
 
 	player.setBlobName(uuidName);
 	player.setRadius(20);
-	player.setPosition(generateRandomBlobPosition(player.getRadius()));
+	player.setPosition(generateRandomBlobPosition((int)player.getRadius()));
 	player.setColor(sf::Color::Color()); // Black
 
 	return player;
@@ -140,36 +140,53 @@ void Server::handleClient(SOCKET clientSocket) {
 	
 	while (true) {
 		clientMousePosition = Protocol::getClientInformationFromClient(Utilities::recieveSocketMessage(clientSocket));
-		//player.calculateNewPlayerPosition();
+		
+		player.calculateNewPlayerPosition(camera.worldToScreenCoordinates(player.getPosition(), player.getPosition()),
+										clientMousePosition, PLAYER_VELOCITY);
+		
+		Utilities::sendSocketMessage(clientSocket, 
+			Protocol::sendBlobToDrawToClient(Server::findWhichBlobsToDraw(this->blobsInGame, 
+												player.getPosition(), camera)));
 	}
 }
 
-static std::vector<Blob*> findWhichBlobsToDraw() {
+/*
+	Player position is in world coordinates
+*/
+std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>> blobsInGame,
+																Point playerPosition,
+																PlayerCamera camera) {
+	std::vector<std::unique_ptr<Blob>> blobsToDraw;
 
+	for (size_t i = 0; i < blobsInGame.size(); i++) {
+		if (camera.shouldDrawBlobOnScreen(playerPosition, blobsInGame.at(i)->getPosition())) {
+			blobsToDraw.push_back(blobsInGame[i]->clone());
+		}
+	}
+
+	if (blobsToDraw.empty()) {
+		printf("Player has no blobs to draw what? \n");
+	}
+
+	return blobsToDraw;
 }
 
-
-static bool shouldDrawBlob(Blob& player, Blob& blob) {
-
-}
-
-static Point generateRandomBlobPosition(int blobRadius) {
+Point Server::generateRandomBlobPosition(int blobRadius) {
 	Point lowerBounds(blobRadius, blobRadius);
 	Point upperBounds(MAP_SIZE - blobRadius, MAP_SIZE - blobRadius);
 	return Utilities::generateRandomPoint(lowerBounds, upperBounds);
 }
 
 
-static std::vector<std::unique_ptr<Blob>> spawnBlobs(int amountOfBlobs) {
+std::vector<std::unique_ptr<Blob>> Server::spawnBlobs(int amountOfBlobs) {
 	std::vector<std::unique_ptr<Blob>> blobs;
 	for (size_t i = 0; i < amountOfBlobs; i++) {
-		blobs.push_back(spawnBlob());
+		blobs.push_back(Server::spawnBlob());
 	}
 	return blobs;
 }
 
-static std::unique_ptr<Blob> spawnBlob() {
-	Blob blob("", BLOB_RADIUS, generateRandomBlobPosition(BLOB_RADIUS), sf::Color::Color());
-	return std::make_unique<Blob>(blob);
+std::unique_ptr<Blob> Server::spawnBlob() {
+	return std::make_unique<Blob>("", BLOB_RADIUS, Server::generateRandomBlobPosition(BLOB_RADIUS), sf::Color::Color());
 }
 

@@ -37,3 +37,8 @@ Point Point::mul(Point other) {
 Point Point::div(Point other) {
 	return Point::Point(this->x / other.x, this->y / other.y);
 }
+
+bool Point::inRectangle(Point topLeft, Point bottomRight) {
+	return (this->x - topLeft.x) > 0 && (this->y - topLeft.y) > 0
+		&& (bottomRight.x - this->x) > 0 && (bottomRight.x - this->x) > 0;
+}

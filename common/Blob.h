@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Point.h"
+#include <memory>
 class Blob {
 protected:
 	std::string name;
@@ -25,6 +26,7 @@ public:
 	void setPosition(Point position);
 	void setColor(sf::Color blobColor);
 	sf::CircleShape& blobToCircle();
+	std::unique_ptr<Blob> clone() const;
 };
 
 #endif // !BLOB_H

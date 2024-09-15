@@ -94,7 +94,7 @@ std::vector<std::unique_ptr<Blob>> Protocol::getBlobsToDrawFromServer(std::strin
 		blob.setColor(sf::Color::Color(stoi(splitBlob.at(4)), stoi(splitBlob.at(5)),
 						stoi(splitBlob.at(6)), stoi(splitBlob.at(7))));
 
-		blobsToDraw.push_back(std::make_unique<Blob>(blob));
+		blobsToDraw.push_back(std::make_unique<Blob>(blob.getBlobName(), blob.getRadius(), blob.getPosition(), blob.getColor()));
 	}
 	return blobsToDraw;
 }

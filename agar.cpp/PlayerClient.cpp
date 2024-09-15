@@ -63,7 +63,7 @@ int PlayerClient::handleConnection() {
 	POINT cursorPosition = { 0,0 };
 	Point mousePosition(0,0);
 	Point gameWindowPos(0,0);
-	std::vector<Blob*> blobsToDraw;
+	std::vector<std::unique_ptr<Blob>> blobsToDraw;
 	std::string recievedMessage;
 	while (running) {
 		GetCursorPos(&cursorPosition);
@@ -90,10 +90,10 @@ int PlayerClient::handleConnection() {
 			return 0;
 		}
 		
-		blobsToDraw = Protocol::getBlobsToDrawFromServer(recievedMessage);
+		blobsToDraw = std::move(Protocol::getBlobsToDrawFromServer(recievedMessage));
 
 		this->updateInformationMutex.lock();
-		updatedInformation.blobsToDraw = blobsToDraw;
+		updatedInformation.blobsToDraw = std::move(blobsToDraw);
 		this->updateInformationMutex.unlock();
 	}
 	this->finished = true;
@@ -111,7 +111,7 @@ AgarServerInformation PlayerClient::getUpdatedInformation() {
 	AgarServerInformation serverInformation;
 	
 	this->updateInformationMutex.lock();
-	serverInformation = updatedInformation;
+	serverInformation.blobsToDraw = std::move(updatedInformation.blobsToDraw);
 	this->updateInformationMutex.unlock();
 
 	return serverInformation;

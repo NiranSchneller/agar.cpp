@@ -1,18 +1,21 @@
 #include "PlayerCamera.h"
 
 PlayerCamera::PlayerCamera(Point screenResolution) {
-	this->width = screenResolution.GetX();
-	this->height = screenResolution.GetY();
+	this->cameraDimensions.SetX(screenResolution.GetX());
+	this->cameraDimensions.SetY(screenResolution.GetY());
 	this->screenResolution = screenResolution;
 }
 
 Point PlayerCamera::worldToScreenCoordinates(Point playerPosition, Point worldPoint) {
 	// Calculate PlayerCamera position
-	Point playerCameraPosition;
-	playerCameraPosition.SetX(playerPosition.GetX() - this->width / 2);
-	playerCameraPosition.SetY(playerPosition.GetY() - this->height / 2);
+	Point playerCameraPosition = playerPosition.minus(this->cameraDimensions.div(2));
 
 	Point relativeToPlayerCamera = worldPoint.minus(playerCameraPosition);
 
-	return relativeToPlayerCamera.mul(this->screenResolution.div(Point::Point(this->width, this->height)));
+	return relativeToPlayerCamera.mul(this->screenResolution.div(this->cameraDimensions));
+}
+
+bool PlayerCamera::shouldDrawBlobOnScreen(Point playerPosition, Point blobPosition) {
+	return blobPosition.inRectangle(playerPosition.minus(this->cameraDimensions.div(2)),
+		playerPosition.plus(this->cameraDimensions.div(2)));
 }

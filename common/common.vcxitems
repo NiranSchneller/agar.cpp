@@ -16,7 +16,6 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Blob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Constants.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Point.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Structs.h" />
@@ -25,7 +24,6 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Blob.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Constants.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Point.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utilities.cpp" />

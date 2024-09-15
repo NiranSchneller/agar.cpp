@@ -16,6 +16,8 @@ public:
 	Point plus(Point other);
 	Point div(Point other);
 	Point mul(Point other);
+	bool inRectangle(Point topLeft, Point bottomRight);
+
 };
 
 #endif
