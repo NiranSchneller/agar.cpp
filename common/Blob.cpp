@@ -60,12 +60,12 @@ void Blob::setColor(sf::Color blobColor) {
 
 	This is used on the client side to draw the actual blob on the screen.
 */
-sf::CircleShape& Blob::blobToCircle() {
+sf::CircleShape Blob::blobToCircle() {
 
 	sf::Vector2f pos(this->position.GetX() - this->radius, this->position.GetY() - this->radius - TITLE_BAR_SIZE);
 
 	sf::CircleShape circle(this->radius);
 	circle.setPosition(pos.x, pos.y);
-	circle.setFillColor(this->blobColor);
+	circle.setFillColor(this->getColor());
 	return circle;
 }

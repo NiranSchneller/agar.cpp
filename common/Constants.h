@@ -10,6 +10,8 @@ extern const std::string SIZE_HEADER; // 8 characters for length and one delimet
 extern const int SIZE_HEADER_SIZE;
 extern const int MAP_SIZE;
 extern const int BLOB_RADIUS;
+extern const int PLAYER_STARTING_RADIUS;
+extern const int BLOB_AMOUNT;
 extern const double PLAYER_VELOCITY; // Pixels per frame
 
 #endif // !CONSTANTS_H

@@ -69,7 +69,12 @@ std::string Protocol::sendBlobToDrawToClient(std::vector<std::unique_ptr<Blob>> 
 		out += blobName + ',' + std::to_string(radius) + ',' + posInText + ',' + colorInText + DELIMETER;
 	}
 
-	currentBlob = std::move(blobsToDraw.at(blobsToDraw.size() - 1));
+	currentBlob = std::make_unique<Blob>(
+		blobsToDraw.at(blobsToDraw.size() - 1)->getBlobName(),
+		blobsToDraw.at(blobsToDraw.size() - 1)->getRadius(),
+		blobsToDraw.at(blobsToDraw.size() - 1)->getPosition(),
+		blobsToDraw.at(blobsToDraw.size() - 1)->getColor()
+	);
 	blobName = currentBlob->getBlobName();
 	radius = currentBlob->getRadius();
 	color = currentBlob->getColor();
@@ -93,6 +98,7 @@ std::vector<std::unique_ptr<Blob>> Protocol::getBlobsToDrawFromServer(std::strin
 	std::vector<std::string> splitBlob;
 	Blob blob(0, Point::Point(0,0));
 	sf::Color blobColor;
+
 	for (size_t i = 0; i < splitMessage.size(); i++) {
 		
 		splitBlob = Utilities::splitByDelimeter(splitMessage.at(i), ",");

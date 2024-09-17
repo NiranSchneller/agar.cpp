@@ -4,7 +4,7 @@
 #include "Graphics.h"
 #include <thread>
 #include <functional> // For std::bind
-
+#include <chrono>
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #pragma comment(lib,"WS2_32")
@@ -44,16 +44,17 @@ int main(int argc, char* argv[]) {
 	std::thread clientThread(std::bind(&PlayerClient::connectToServer, std::ref(client), pConnectionResult, &graphics.getGameWindow()));
 	
 	AgarServerInformation serverInfo;
+	std::chrono::milliseconds delay(20);
 	while (!client.isFinished()) {
 		serverInfo = client.getUpdatedInformation();
 		graphics.getGameWindow().clear(sf::Color(255, 255, 255)); // White lol!
-		graphics.drawAllBlobs(std::move(serverInfo.blobsToDraw));
-		
+		graphics.drawAllBlobs(serverInfo.blobsToDraw);
 		graphics.getGameWindow().display();
 		
 		if (*pConnectionResult != 0) {
 			return 1;
 		}
+		std::this_thread::sleep_for(delay);
 	}
 	
 

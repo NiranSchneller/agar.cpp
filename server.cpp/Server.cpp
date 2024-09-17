@@ -115,7 +115,7 @@ Player Server::spawnPlayer() {
 	}
 
 	player.setBlobName(uuidName);
-	player.setRadius(20);
+	player.setRadius(PLAYER_STARTING_RADIUS);
 	player.setPosition(generateRandomBlobPosition((int)player.getRadius()));
 	player.setColor(sf::Color::Color()); // Black
 
@@ -143,10 +143,9 @@ void Server::handleClient(SOCKET clientSocket) {
 		
 		player.calculateNewPlayerPosition(camera.worldToScreenCoordinates(player.getPosition(), player.getPosition()),
 										clientMousePosition, PLAYER_VELOCITY);
-		
 		Utilities::sendSocketMessage(clientSocket, 
 			Protocol::sendBlobToDrawToClient(Server::findWhichBlobsToDraw(this->blobsInGame, 
-												player.getPosition(), camera)));
+												player, camera)));
 	}
 }
 
@@ -154,11 +153,12 @@ void Server::handleClient(SOCKET clientSocket) {
 	Player position is in world coordinates
 */
 std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>>& blobsInGame,
-																Point playerPosition,
+																Player player,
 																PlayerCamera camera) {
 	std::vector<std::unique_ptr<Blob>> blobsToDraw;
 	Blob screenBlob;
 	Point pos;
+	Point playerPosition = player.getPosition();
 	for (size_t i = 0; i < blobsInGame.size(); i++) {
 		if (camera.shouldDrawBlobOnScreen(playerPosition, blobsInGame.at(i)->getPosition())) {
 			screenBlob = Blob::Blob(blobsInGame[i]->getBlobName(), blobsInGame[i]->getRadius(), blobsInGame[i]->getPosition(), blobsInGame[i]->getColor());
@@ -170,9 +170,13 @@ std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std:
 		}
 	}
 
-	if (blobsToDraw.empty()) {
+	if (blobsInGame.empty()) {
 		printf("Player has no blobs to draw what? \n");
 	}
+
+	pos = camera.worldToScreenCoordinates(playerPosition, playerPosition);
+	pos = Point::Point((int)pos.GetX(), (int)pos.GetY());
+	blobsToDraw.push_back(std::make_unique<Blob>(player.getBlobName(), player.getRadius(), pos, player.getColor()));
 
 	return blobsToDraw;
 }

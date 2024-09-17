@@ -31,7 +31,7 @@ public:
 	Player spawnPlayer();
 
 	static std::vector<std::unique_ptr<Blob>> findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>>& blobsInGame,
-		Point playerPosition,
+		Player player,
 		PlayerCamera camera);
 
 	static Point generateRandomBlobPosition(int blobRadius);

@@ -25,7 +25,7 @@ public:
 	void setRadius(double radius);
 	void setPosition(Point position);
 	void setColor(sf::Color blobColor);
-	sf::CircleShape& blobToCircle();
+	sf::CircleShape blobToCircle();
 	std::unique_ptr<Blob> clone() const;
 };
 

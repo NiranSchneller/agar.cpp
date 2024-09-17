@@ -123,13 +123,15 @@ std::string Utilities::recieveSocketMessage(SOCKET socket) {
 std::vector<std::string> Utilities::splitByDelimeter(std::string message, std::string delimeter) {
 	std::vector<std::string> out;
 	int currentIndex = message.find(delimeter);
-	
+	if (message == "") {
+		return out;
+	}
 	while (currentIndex != std::string::npos) {
 		out.push_back(message.substr(0, currentIndex));
 		message = message.substr(currentIndex + delimeter.length());
 		currentIndex = message.find(delimeter);
 	}
-	out.push_back(message.substr(0, currentIndex));
+	out.push_back(message);
 	return out;
 }
 
