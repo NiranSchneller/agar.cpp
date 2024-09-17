@@ -67,5 +67,6 @@ sf::CircleShape Blob::blobToCircle() {
 	sf::CircleShape circle(this->radius);
 	circle.setPosition(pos.x, pos.y);
 	circle.setFillColor(this->getColor());
+	circle.setPointCount(100);
 	return circle;
 }

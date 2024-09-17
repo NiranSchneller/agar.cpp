@@ -12,6 +12,9 @@ extern const int MAP_SIZE;
 extern const int BLOB_RADIUS;
 extern const int PLAYER_STARTING_RADIUS;
 extern const int BLOB_AMOUNT;
+extern const sf::Color BACKGROUND_COLOR;
+extern const sf::Color PLAYER_COLOR;
+extern const double INTERPOLATION_STEP;
 extern const double PLAYER_VELOCITY; // Pixels per frame
 
 #endif // !CONSTANTS_H

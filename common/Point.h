@@ -16,7 +16,10 @@ public:
 	Point plus(Point other);
 	Point div(Point other);
 	Point mul(Point other);
+	Point square();
 	bool inRectangle(Point topLeft, Point bottomRight);
+	double distance(Point other);
+
 
 };
 

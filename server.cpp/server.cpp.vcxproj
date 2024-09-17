@@ -135,12 +135,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\common\Player.h" />
+    <ClInclude Include="Interpolator.h" />
     <ClInclude Include="PlayerCamera.h" />
     <ClInclude Include="Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\Player.cpp" />
     <ClCompile Include="AgarServer.cpp" />
+    <ClCompile Include="Interpolator.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="Server.cpp" />
   </ItemGroup>

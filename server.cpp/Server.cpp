@@ -117,7 +117,7 @@ Player Server::spawnPlayer() {
 	player.setBlobName(uuidName);
 	player.setRadius(PLAYER_STARTING_RADIUS);
 	player.setPosition(generateRandomBlobPosition((int)player.getRadius()));
-	player.setColor(sf::Color::Color()); // Black
+	player.setColor(PLAYER_COLOR); // Black
 
 	return player;
 }
@@ -137,15 +137,38 @@ void Server::handleClient(SOCKET clientSocket) {
 		Implement protocol.h
 	*/
 	Point clientMousePosition(0,0);
-	
+	auto lambda = [&camera]() {camera.run(); };
+	std::thread cameraThread(lambda);
 	while (true) {
 		clientMousePosition = Protocol::getClientInformationFromClient(Utilities::recieveSocketMessage(clientSocket));
 		
 		player.calculateNewPlayerPosition(camera.worldToScreenCoordinates(player.getPosition(), player.getPosition()),
 										clientMousePosition, PLAYER_VELOCITY);
+		eatBlobs(player, camera, Point::Point(initialInformation.at(0), initialInformation.at(1)));
+		camera.run();
 		Utilities::sendSocketMessage(clientSocket, 
 			Protocol::sendBlobToDrawToClient(Server::findWhichBlobsToDraw(this->blobsInGame, 
 												player, camera)));
+	}
+	cameraThread.join();
+}
+
+/*
+	Assumes the player radius will always be bigger than any of the blobs.
+*/
+void Server::eatBlobs(Player& player, PlayerCamera& camera, Point resolution) {
+
+	double eatenBlobRadius;
+	for (size_t i = 0; i < this->blobsInGame.size(); i++) {
+		if (player.enclosesBlob(*this->blobsInGame.at(i))) {
+			camera.ate(player.getRadius());
+			player.ate(this->blobsInGame.at(i)->getRadius());
+			this->blobMutex.lock();
+			this->blobsInGame.erase(this->blobsInGame.begin() + i); // Remove Ith blob.
+			this->blobsInGame.push_back(spawnBlob());
+			this->blobMutex.unlock();
+			i--;
+		}
 	}
 }
 
@@ -158,15 +181,20 @@ std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std:
 	std::vector<std::unique_ptr<Blob>> blobsToDraw;
 	Blob screenBlob;
 	Point pos;
+	int newRadius;
 	Point playerPosition = player.getPosition();
 	for (size_t i = 0; i < blobsInGame.size(); i++) {
-		if (camera.shouldDrawBlobOnScreen(playerPosition, blobsInGame.at(i)->getPosition())) {
+		if (camera.shouldDrawBlobOnScreen(playerPosition, blobsInGame.at(i)->getPosition(), blobsInGame.at(i)->getRadius())) {
 			screenBlob = Blob::Blob(blobsInGame[i]->getBlobName(), blobsInGame[i]->getRadius(), blobsInGame[i]->getPosition(), blobsInGame[i]->getColor());
 
 			pos = camera.worldToScreenCoordinates(playerPosition, screenBlob.getPosition());
 			pos = Point::Point((int)pos.GetX(), (int)pos.GetY());
 			screenBlob.setPosition(pos);
-			blobsToDraw.push_back(std::make_unique<Blob>(screenBlob.getBlobName(), screenBlob.getRadius(), screenBlob.getPosition(), screenBlob.getColor()));
+
+			newRadius = camera.radiusWorldToScreen(screenBlob.getRadius());
+
+
+			blobsToDraw.push_back(std::make_unique<Blob>(screenBlob.getBlobName(), newRadius, screenBlob.getPosition(), screenBlob.getColor()));
 		}
 	}
 
@@ -176,7 +204,8 @@ std::vector<std::unique_ptr<Blob>> Server::findWhichBlobsToDraw(std::vector<std:
 
 	pos = camera.worldToScreenCoordinates(playerPosition, playerPosition);
 	pos = Point::Point((int)pos.GetX(), (int)pos.GetY());
-	blobsToDraw.push_back(std::make_unique<Blob>(player.getBlobName(), player.getRadius(), pos, player.getColor()));
+	newRadius = camera.radiusWorldToScreen(player.getRadius());
+	blobsToDraw.push_back(std::make_unique<Blob>(player.getBlobName(), newRadius, pos, player.getColor()));
 
 	return blobsToDraw;
 }
@@ -196,8 +225,12 @@ std::vector<std::unique_ptr<Blob>> Server::spawnBlobs(int amountOfBlobs) {
 	}
 	return blobs;
 }
+sf::Color generateRandomColor() {
+	Point random = Utilities::generateRandomPoint(Point::Point(0, 0), Point::Point(124, 124));
+	return sf::Color(random.GetX(), random.GetY(), (random.GetX() + random.GetY()) / 2);
+}
 
 std::unique_ptr<Blob> Server::spawnBlob() {
-	return std::make_unique<Blob>("", BLOB_RADIUS, Server::generateRandomBlobPosition(BLOB_RADIUS), sf::Color::Color());
+	return std::make_unique<Blob>("", BLOB_RADIUS, Server::generateRandomBlobPosition(BLOB_RADIUS), generateRandomColor());
 }
 

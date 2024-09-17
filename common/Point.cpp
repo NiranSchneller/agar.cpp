@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Point.h"
+#include <cmath>
 
 Point::Point(double x, double y) {
 	this->x = x;
@@ -42,3 +43,14 @@ bool Point::inRectangle(Point topLeft, Point bottomRight) {
 	return (this->x - topLeft.x) > 0 && (this->y - topLeft.y) > 0
 		&& (bottomRight.x - this->x) > 0 && (bottomRight.y - this->y) > 0;
 }
+
+Point Point::square() {
+	return this->mul(*this);
+}
+
+double Point::distance(Point other) {
+	Point cartesian = other.minus(*this).square();
+
+	return std::sqrt(cartesian.x + cartesian.y);
+}
+

@@ -24,6 +24,9 @@
     <ClInclude Include="PlayerCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Interpolator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AgarServer.cpp">
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpolator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

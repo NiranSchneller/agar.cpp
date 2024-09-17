@@ -7,6 +7,8 @@
 #include "Player.h"
 #include "Point.h"
 #include "PlayerCamera.h"
+#include <mutex>
+
 class Server
 {
 private:
@@ -21,6 +23,11 @@ private:
 	void dispatchToServerThread(SOCKET clientSocket);
 	void handleClient(SOCKET clientSocket);
 
+	/*
+		Everytime we want to replace a blob that has been eaten, 
+		this mutex will be used (no exception because RAII [shit name btw]).
+	*/
+	std::mutex blobMutex;
 public:
 	Server(int amountOfBlobs);
 	/*
@@ -30,16 +37,18 @@ public:
 	int startServer(int port); 
 	Player spawnPlayer();
 
+	void eatBlobs(Player& player, PlayerCamera& camera, Point resolution);
+
 	static std::vector<std::unique_ptr<Blob>> findWhichBlobsToDraw(std::vector<std::unique_ptr<Blob>>& blobsInGame,
 		Player player,
 		PlayerCamera camera);
 
 	static Point generateRandomBlobPosition(int blobRadius);
 
-
 	static std::vector<std::unique_ptr<Blob>> spawnBlobs(int amountOfBlobs);
 
 	static std::unique_ptr<Blob> spawnBlob();
+
 };
 
 

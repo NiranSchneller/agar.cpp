@@ -16,7 +16,10 @@ const std::string SIZE_HEADER = "00000000" + DELIMETER; // 8 characters for leng
 const int SIZE_HEADER_SIZE = SIZE_HEADER.length();
 const int MAP_SIZE = 20000;
 const int BLOB_RADIUS = 20;
-const int BLOB_AMOUNT = 2000;
+const sf::Color BACKGROUND_COLOR = sf::Color::Color(173, 216, 230);
+const sf::Color PLAYER_COLOR = sf::Color(0, 200, 200);
+const int BLOB_AMOUNT = 4000;
+const double INTERPOLATION_STEP = 0.01;
 const int PLAYER_STARTING_RADIUS = 100;
 const double PLAYER_VELOCITY = 1;
 

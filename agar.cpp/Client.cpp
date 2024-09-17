@@ -44,10 +44,10 @@ int main(int argc, char* argv[]) {
 	std::thread clientThread(std::bind(&PlayerClient::connectToServer, std::ref(client), pConnectionResult, &graphics.getGameWindow()));
 	
 	AgarServerInformation serverInfo;
-	std::chrono::milliseconds delay(20);
+	std::chrono::milliseconds delay(10);
 	while (!client.isFinished()) {
 		serverInfo = client.getUpdatedInformation();
-		graphics.getGameWindow().clear(sf::Color(255, 255, 255)); // White lol!
+		graphics.getGameWindow().clear(BACKGROUND_COLOR); 
 		graphics.drawAllBlobs(serverInfo.blobsToDraw);
 		graphics.getGameWindow().display();
 		
